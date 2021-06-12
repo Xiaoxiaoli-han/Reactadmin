@@ -39,6 +39,7 @@ export default class Role extends Component {
             // 时间格式化
             roles = roles.map(role =>{
                 role.create_time = formatDate(role.create_time) 
+                role.auth_time = formatDate(role.auth_time) 
                 return role
             })
             this.setState({roles})

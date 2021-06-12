@@ -37,7 +37,7 @@ const { SubMenu } = Menu;
     render() {
         //得到当前请求的路由路径
         let path = this.props.location.pathname
-        if(path.indexOf('/product' === 0)){  //当点击商品详情页时：'/product/detail',让选中路径为'/product'
+        if(path.indexOf('/product')=== 0){  //当点击商品详情页时：'/product/detail',让选中路径为'/product'
             //indexOf在字符串：返回某个指定的字符串值在字符串中首次出现的位置
             path = '/product'
         }
@@ -48,9 +48,9 @@ const { SubMenu } = Menu;
                     <h1>商品后台管理</h1>
                 </Link>
                 <Menu
-                defaultSelectedKeys={[path]}
+                defaultSelectedKeys={path}
                 defaultOpenKeys={[this.openKey]}
-                selectedKeys={[path]}
+                selectedKeys={path}
                 mode="inline"
                 theme="dark"
                 >

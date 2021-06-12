@@ -5,7 +5,7 @@
 
 ### setState() 两种使用方式：
     1.this.setState({a:3})  传对象，在不依赖原有状态情况下
-    2.this.setState(state=>{ a:state.a + 1})  传函数，依赖原有状态情况下
+    2.this.setState(state=>({ a:state.a + 1}))  传函数，依赖原有状态情况下
 
 ### setState() 是同步还是异步？
     1.在React相关回调 (React回调 生命周期)
