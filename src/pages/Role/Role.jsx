@@ -125,7 +125,13 @@ export default class Role extends Component {
                 rowKey='_id'
                 pagination= {{defaultPageSize:5}}
                 loading={loading}
-                rowSelection={{type:'radio',selectedRowKeys:[role._id]}}
+                rowSelection={{
+                    type:'radio',
+                    selectedRowKeys:[role._id],
+                    onSelect:(role)=> { // 选择当前radio时的回调
+                        this.setState({role})
+                    }
+                }}
                 onRow={this.onRow}
                 />
             </Card>

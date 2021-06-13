@@ -1,54 +1,84 @@
-import React, { Component } from 'react'
-import ReactEcharts from 'echarts-for-react'
-import {Card,Button} from 'antd'
+import React, { Component } from "react";
+import { Button, Card } from "antd";
+import ReactEcharts from "echarts-for-react";
 export default class Bar extends Component {
-    state = {
-        sales: [5, 20, 36, 10, 10, 20],
-        inventorys: [15, 30, 46, 20, 20, 40]
+    state={
+        sales:[5,20,36,10,10,20],
+        stores:[6,10,25,20,15,10],
     }
-    getOption = ()=>{
-        const {sales, inventorys} = this.state
-        return {
-            title: {
-            text: '销量库存统计'
-            },
-            tooltip: {},
-            legend: {
-            data:['销量', '库存']
-            },
-            xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            },
-            yAxis: {},
-            series: [{
-            name: '销量',
-            type: 'bar',
-            data:sales
-        }, {
-            name: '库存',
-            type: 'bar',
-            data: inventorys
-            }]
-        }
+
+    update = () =>{
+        this.setState(state=>({
+            sales:state.sales.map(sale=>sale+1),
+            stores:state.stores.reduce((pre,store)=>{
+                pre.push(store-1)
+                return pre
+            },[]),
+        }))
     }
-    update = ()=>{
-        const sales = this.state.sales.map(sale => sale + 1)
-        const inventorys = this.state.inventorys.map(inventory => inventory -1)
-        this.setState({
-            sales,
-            inventorys
-        })
-    }
-    render() {
-        const title = (
-            <Button type='primary' onClick={this.update}>更新</Button>
-        )
-        return (
-            <div>
-                <Card title={title}>
-                    <ReactEcharts option={this.getOption} style={{height:300}}/>
-                </Card>
-            </div>
-        )
-    }
+  /* 返回柱状图的配置对象 */
+  getOption = (sales,stores) => {
+    return {
+      title: {
+        text: "销量",
+      },
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+        },
+      },
+      grid: {
+        left: "3%",
+        right: "4%",
+        bottom: "3%",
+        containLabel: true,
+      },
+      legend: {
+        data: ["销量", "库存"],
+      },
+      xAxis: [
+        {
+          type: "category",
+          data: ["衬衫", "羊毛衫", "裤子", "雪纺衫", "高跟鞋", "袜子"],
+          axisTick: {
+            alignWithLabel: true,
+          },
+        },
+      ],
+      yAxis: [
+        {
+          type: "value",
+        },
+      ],
+      series: [
+        {
+          name: "销量",
+          type: "bar",
+          // barWidth: '60%',
+          data: sales,
+        },
+        {
+          name: "库存",
+          type: "bar",
+          // barWidth: '60%',
+          data: stores,
+        },
+      ],
+    };
+  };
+  render() {
+      const {sales,stores} = this.state
+    return (
+        <div>
+      <Card >
+        <Button onClick={()=>this.update()}type="primary">更新</Button>
+        </Card>
+          <Card title='柱状图'>
+          <ReactEcharts style={{height:'300px'}} option={this.getOption(sales,stores)}></ReactEcharts>
+          </Card>
+      </div>
+    );
+  }
 }

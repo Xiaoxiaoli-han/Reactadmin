@@ -12,6 +12,7 @@ export default class AddOrUpdateForm extends Component {
     onValuesChange = (changedValues,values)=>{
         this.props.getFormData(values)
     }
+
     render() {
         const {roles,updateUser} = this.props
         const {username,password,phone,role_id,email} = updateUser || {}
@@ -48,7 +49,7 @@ export default class AddOrUpdateForm extends Component {
                     <Form.Item label='邮箱' name="email" initialValue={email}>
                         <Input  placeholder='输入'/>
                     </Form.Item>
-                    <Form.Item label='所属角色' name="role_id" initialValue= {role_id}>
+                    <Form.Item label='所属角色' name="role_id" initialValue= {role_id? role_id:'选择所属角色'}>
                         <Select  style={{width:200}}>
                             {
                                 roles.map(role=>{
