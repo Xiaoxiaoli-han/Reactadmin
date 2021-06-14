@@ -62,16 +62,16 @@ export default class Home extends Component {
           //   extra={<Icon  />}
         >
           <Timeline>
-            <Timeline.Item color="green">新版本迭代会</Timeline.Item>
+            <Timeline.Item color="green">系统初步构架</Timeline.Item>
             <Timeline.Item color="green">完成网站设计初版</Timeline.Item>
             <Timeline.Item color="red">
               <p>联调接口</p>
               <p>功能验收</p>
             </Timeline.Item>
             <Timeline.Item>
-              <p>登录功能设计</p>
+              <p>各页面功能设计</p>
               <p>权限验证</p>
-              <p>页面排版</p>
+              <p>调试</p>
             </Timeline.Item>
           </Timeline>
         </Card>

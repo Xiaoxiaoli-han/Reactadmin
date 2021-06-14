@@ -8,7 +8,7 @@ export default class Category extends Component {
     state = {
         isLoading:true,
         category:[],
-        parentID:'0',
+        parentID:'0', // 一级商品对应的Id  默认为0时显示的就是一级分类 
         subCategory:[],//二级分类列表
         parentName:'',
         isModalVisible:0,// 0不可见，1显示添加modal,2显示更新modal
@@ -85,20 +85,24 @@ export default class Category extends Component {
                 isModalVisible: 0,
               })
               const {parentId,categoryName} = values
+              console.log('parentId:',parentId,'this.state.parentID:',this.state.parentID)
               //在二级分类下不能添加其他分类列表
-              if(parentId === this.state.parentID){ 
+              //在一级分类下可以添加其他分类
+              if(parentId === this.state.parentID || (parentId !=='0'&& this.state.parentID ==='0')){ 
                 const result = await reqAddCategory(parentId,categoryName)
                 if(result.status === 0){
-                    console.log(parentId,this.state.parentID)
                       this.setCategory()
-                      message.success('添加成功')
+                      message.success(`添加${categoryName}成功！`)
                 }
             }else if(parentId === '0'){ 
                 //如果在二级分类列表下添加一级，重新获取一级分类，但不需要显示
                 const result = await reqAddCategory(parentId,categoryName)
                 if(result.status === 0){
                     this.setCategory('0')
+                    message.success('添加一级分类成功')
                 }
+            }else {
+                message.error('不能这样添加哦！')
             }
         }).catch(err=>{
             console.log(err)

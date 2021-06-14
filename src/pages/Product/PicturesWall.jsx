@@ -32,7 +32,6 @@ export default class PicturesWall extends Component {
                   }
             })
         }
-
         this.state = {
             previewVisible: false, //是否显示大图
             previewImage: '', //大图的URL
@@ -92,21 +91,21 @@ export default class PicturesWall extends Component {
     const uploadButton = (
       <div>
         <PlusOutlined />
-        <div style={{ marginTop: 8 }}>Upload</div>
+        <div style={{ marginTop: 8 }}>上传</div>
       </div>
     );
     return (
       <>
         <Upload
-          action="/manage/img/upload"
+          action="/manage/img/upload" // 上传请求接口
           accept='image/*'//上传文件类型
           name='image' //请求参数名
           listType="picture-card"
-          fileList={fileList}
-          onPreview={this.handlePreview}
-          onChange={this.handleChange}
+          fileList={fileList} //上传文件数量
+          onPreview={this.handlePreview} // 图片显示大图的回调
+          onChange={this.handleChange}  // 图片上传过程中的回调
         >
-          {fileList.length >= 8 ? null : uploadButton}
+          {fileList.length >= 2 ? null : uploadButton} 
         </Upload>
         <Modal
           visible={previewVisible}

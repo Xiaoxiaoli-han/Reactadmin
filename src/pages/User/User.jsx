@@ -92,19 +92,24 @@ export default class User extends Component {
         
     }
     //创建或修改用户
-    addOrUpdateUser = async ()=>{
+    addOrUpdateUser = ()=>{
         const {updateUser} = this.state
-        const user = this.formData // 表单传过来的数据
-        if(updateUser._id){
-            user._id = updateUser._id
-        }
-        const result = await reqAddOrUpdateUser(user)
-        if(result.status === 0){
-            this.getUsers()
-            this.setState({isModalVisible:0})
-            message.success(`${updateUser._id? '修改':'创建'}用户成功！`)
-        }else if(result.status === 1)
-            message.error(`${updateUser._id? '修改':'创建'}的用户同名啦！`)
+        this.formData.validateFields().then(async user=>{
+            console.log('user:',user)
+            if(updateUser._id){
+                user._id = updateUser._id
+            }
+            const result = await reqAddOrUpdateUser(user)
+            if(result.status === 0){
+                this.getUsers()
+                this.setState({isModalVisible:0})
+                message.success(`${updateUser._id? '修改':'创建'}用户成功！`)
+            }else if(result.status === 1)
+                message.error(`${updateUser._id? '修改':'创建'}的用户同名啦！`)
+        })
+        .catch(error=>{
+            message.error(`输入不正确`)
+        })
     }
     componentDidMount(){
         this.initColumns()

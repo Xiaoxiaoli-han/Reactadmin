@@ -7,19 +7,21 @@ export default class AddOrUpdateForm extends Component {
         getFormData:PropTypes.func,
         updateUser:PropTypes.object
     }
-    form = React.createRef()
+    formRef = React.createRef()
     // 收集表单数据
-    onValuesChange = (changedValues,values)=>{
+    /* onValuesChange = (changedValues,values)=>{
         this.props.getFormData(values)
+    } */
+    componentDidMount(){
+        this.props.getFormData(this.formRef.current)
     }
-
     render() {
         const {roles,updateUser} = this.props
         const {username,password,phone,role_id,email} = updateUser || {}
         console.log(updateUser,username)
         return (
             <div>
-                <Form style={{marginLeft:20}} onValuesChange={this.onValuesChange} ref = {this.form}>
+                <Form style={{marginLeft:20}} ref = {this.formRef}>
                     <Form.Item 
                     label='用户名'
                     name="username"
@@ -49,7 +51,14 @@ export default class AddOrUpdateForm extends Component {
                     <Form.Item label='邮箱' name="email" initialValue={email}>
                         <Input  placeholder='输入'/>
                     </Form.Item>
-                    <Form.Item label='所属角色' name="role_id" initialValue= {role_id? role_id:'选择所属角色'}>
+                    <Form.Item 
+                    label='所属角色' 
+                    name="role_id" 
+                    initialValue= {role_id? role_id:'选择所属角色'}
+                    rules={[
+                        { required: true, message: '请选择角色' },
+                      ]}
+                    >
                         <Select  style={{width:200}}>
                             {
                                 roles.map(role=>{

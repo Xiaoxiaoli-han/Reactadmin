@@ -33,7 +33,7 @@ export default class Home extends Component {
                 //dataIndex: 'status',
                 render: (product) =>{
                     const {_id,status} = product
-                    console.log(_id)
+                    //console.log(_id)
                     const newStatus = status===1? 2:1
                     return (
                         <span>
