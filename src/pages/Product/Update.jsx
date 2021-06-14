@@ -80,6 +80,7 @@ export default class Update extends Component {
     }
     //动态加载二级列表
     loadData = async (selectedOptions) => {
+        //loadData默认传值：当前一级selectedOptions
         const targetOption = selectedOptions[0];
         targetOption.loading = true;
         const subCategories = await this.getCategoryList(targetOption.value)
@@ -171,6 +172,7 @@ export default class Update extends Component {
                             options={options}
                             loadData={this.loadData}
                             expandTrigger="hover"
+                            placeholder='请选择分类'
                             />
                         </Item>
                         <Item

@@ -58,18 +58,18 @@ export default class Login extends Component {
                     <Form.Item
                         name="username"
                         rules={[
-                        { required: true,message: 'Please input your Username!'},
+                        { required: true,message: '请输入用户名!'},
                         { max:12,message:'用户名最多为12位'},
                         { min:4,message:'用户名至少为4位'},
                         { pattern:/^[a-zA-Z0-9_]+$/,message:'必须是英文数字下划线组成'}
                         ]}
                     >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="用户名" />
                 </Form.Item>
                 <Form.Item
                     name="password"
                     rules={[
-                        { required: true,message: 'Please input your Username!'},
+                        { required: true,message: '请输入密码!'},
                         { min:4,message:'密码至少为4位'},
                         { pattern:/^[a-zA-Z0-9_]+$/,message:'必须是英文、数字或下划线组成'}
                     ]}
@@ -77,7 +77,7 @@ export default class Login extends Component {
                     <Input
                     prefix={<LockOutlined className="site-form-item-icon" />}
                     type="password"
-                    placeholder="Password"
+                    placeholder="密码"
                      />
                 </Form.Item>
 

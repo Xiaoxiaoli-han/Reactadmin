@@ -4,6 +4,7 @@ import { reqAddRole, reqGetRoles, reqUpdateRole } from '../../api'
 import AddForm from './AddForm'
 import formatDate from '../../utils/dateUtils'
 import SetAuthority from './SetAuthority'
+import memoryIfon from '../../utils/memoryUtils'
 export default class Role extends Component {
     state = {
         loading:false,
@@ -27,7 +28,10 @@ export default class Role extends Component {
             },
             {
                 title:'授权人',
-                dataIndex:'auth_name'
+                dataIndex:'auth_name',
+                render:()=>{
+                    return memoryIfon.user.username
+                }
             }
         ]
     }
@@ -125,7 +129,13 @@ export default class Role extends Component {
                 rowKey='_id'
                 pagination= {{defaultPageSize:5}}
                 loading={loading}
-                rowSelection={{type:'radio',selectedRowKeys:[role._id]}}
+                rowSelection={{
+                    type:'radio',
+                    selectedRowKeys:[role._id],
+                    onSelect:(role)=> { // 选择当前radio时的回调
+                        this.setState({role})
+                    }
+                }}
                 onRow={this.onRow}
                 />
             </Card>

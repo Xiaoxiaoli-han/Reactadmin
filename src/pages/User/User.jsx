@@ -92,34 +92,24 @@ export default class User extends Component {
         
     }
     //创建或修改用户
-    addOrUpdateUser = async ()=>{
-        const {isModalVisible,updateUser} = this.state
-        const user = this.formData // 表单传过来的数据
-        if(isModalVisible === 2){
-            //修改用户
-            if(user !==undefined){
+    addOrUpdateUser = ()=>{
+        const {updateUser} = this.state
+        this.formData.validateFields().then(async user=>{
+            console.log('user:',user)
+            if(updateUser._id){
                 user._id = updateUser._id
-                const result = await reqAddOrUpdateUser(user)
-                if(result.status === 0){
-                    this.setState({isModalVisible:0})
-                    this.getUsers()
-                    message.success('修改成功')
-                }else{
-                    message.error('修改失败')
-                }
-            }else
-                this.setState({isModalVisible:0}) // 表单没有做任何修改时
-        }else{
-            //添加用户
-           const result = await reqAddOrUpdateUser(user)
-           if(result.status === 0){
-               message.success('添加成功')
-                this.setState({isModalVisible:0})
-                this.getUsers()
-           }else if(result.status === 1){
-                message.error('用户名重复')
             }
-        }
+            const result = await reqAddOrUpdateUser(user)
+            if(result.status === 0){
+                this.getUsers()
+                this.setState({isModalVisible:0})
+                message.success(`${updateUser._id? '修改':'创建'}用户成功！`)
+            }else if(result.status === 1)
+                message.error(`${updateUser._id? '修改':'创建'}的用户同名啦！`)
+        })
+        .catch(error=>{
+            message.error(`输入不正确`)
+        })
     }
     componentDidMount(){
         this.initColumns()
@@ -141,8 +131,8 @@ export default class User extends Component {
                 loading={loading}
                 />
             </Card>
-            <Modal title="创建用户" 
-                visible={isModalVisible ===0? false:true} 
+            <Modal title={updateUser._id? '修改角色':'创建角色'} 
+                visible={isModalVisible} 
                 onOk={this.addOrUpdateUser} 
                 onCancel={()=>{this.setState({isModalVisible:0})}}
                 destroyOnClose={true}

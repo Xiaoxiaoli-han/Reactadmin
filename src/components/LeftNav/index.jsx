@@ -5,28 +5,49 @@ import './index.less'
 import logo from '../../assets/images/logo.png'
 import { Link, withRouter } from 'react-router-dom';
 import menuList from '../../config/menuConfig';
+import memoryUser from '../../utils/memoryUtils.js'
 const { SubMenu } = Menu;
 /* 左侧导航栏 */
  class LeftNav extends Component {
 
+
+    // 判断当前登录用户的权限
+    hasAuth = (item)=>{
+        /* 
+            1.当前用户为adimn拥有全部权限
+            2.isPublic为true
+            3.当前用户menus与item匹配
+            4.当前用户只有子权限的情况
+        */
+       const {username,role} = memoryUser.user
+       if(username==='admin' || item.isPublic || role.menus.indexOf(item.key)>=0)
+            return true
+        else if(item.children){
+            return !!item.children.find(citem=> role.menus.indexOf(citem.key)>=0 )
+        }
+        else
+            return false
+    }
     getMenuNodes = (menuList)=>{
         //得到当前请求的路由路径
         const path = this.props.location.pathname
         return menuList.map(item =>{
-            if(!item.children){
-                return <Menu.Item key={item.key} icon={item.icon}><Link to={item.key}>{item.title}</Link></Menu.Item>
-            }else{
-               const cItem =  item.children.find(cItem=> cItem.key === path)
-               if(cItem){
-                   //找到当前请求path路径的父item.key
-                   this.openKey = item.key
-               }
-                return (
-                    <SubMenu key={item.key} icon={item.icon} title={item.title}>
-                        {/* 递归实现 */}
-                        {this.getMenuNodes(item.children)} 
-                    </SubMenu>
-                )
+            if(this.hasAuth(item)){
+                if(!item.children){
+                    return <Menu.Item key={item.key} icon={item.icon}><Link to={item.key}>{item.title}</Link></Menu.Item>
+                }else{
+                   const cItem =  item.children.find(cItem=> cItem.key === path)
+                   if(cItem){
+                       //找到当前请求path路径的父item.key
+                       this.openKey = item.key
+                   }
+                    return (
+                        <SubMenu key={item.key} icon={item.icon} title={item.title}>
+                            {/* 递归实现 */}
+                            {this.getMenuNodes(item.children)} 
+                        </SubMenu>
+                    )
+                }
             }
         })
     }
